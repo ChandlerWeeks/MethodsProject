@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 23, 2022 at 04:34 AM
+-- Generation Time: Nov 23, 2022 at 04:52 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `book` (
   `BookID` int(20) NOT NULL,
-  `Title` char(20) NOT NULL,
+  `Title` char(20) DEFAULT NULL,
   `ISBN` char(20) DEFAULT NULL,
   `Author` char(20) DEFAULT NULL,
   `Genre` char(20) DEFAULT NULL,
@@ -267,11 +267,23 @@ ALTER TABLE `user`
 --
 
 --
+-- Constraints for table `book`
+--
+ALTER TABLE `book`
+  ADD CONSTRAINT `bookID` FOREIGN KEY (`BookID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `cartitems`
 --
 ALTER TABLE `cartitems`
   ADD CONSTRAINT `cartID` FOREIGN KEY (`CartID`) REFERENCES `shoppingcart` (`CartID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `itemID` FOREIGN KEY (`ItemID`) REFERENCES `inventory` (`ItemID`);
+  ADD CONSTRAINT `itemID` FOREIGN KEY (`ItemID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `movie`
+--
+ALTER TABLE `movie`
+  ADD CONSTRAINT `movieID` FOREIGN KEY (`MovieID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `shoppingcart`
