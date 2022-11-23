@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 23, 2022 at 04:52 AM
+-- Generation Time: Nov 23, 2022 at 06:25 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -52,9 +52,10 @@ INSERT INTO `book` (`BookID`, `Title`, `ISBN`, `Author`, `Genre`, `Count`, `Styl
 --
 
 CREATE TABLE `cartitems` (
-  `CartItemID` int(20) NOT NULL,
+  `CartItemsID` int(20) NOT NULL,
   `CartID` int(20) DEFAULT NULL,
   `ItemID` int(20) DEFAULT NULL,
+  `ItemName` char(20) DEFAULT NULL,
   `Price` float DEFAULT NULL,
   `Quantity` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -63,9 +64,8 @@ CREATE TABLE `cartitems` (
 -- Dumping data for table `cartitems`
 --
 
-INSERT INTO `cartitems` (`CartItemID`, `CartID`, `ItemID`, `Price`, `Quantity`) VALUES
-(1, 1, 1, 10.99, 1),
-(2, 1, 2, 12.99, 1);
+INSERT INTO `cartitems` (`CartItemsID`, `CartID`, `ItemID`, `ItemName`, `Price`, `Quantity`) VALUES
+(6, 1, 1, 'Wuthering Heights', 10.99, 1);
 
 -- --------------------------------------------------------
 
@@ -183,7 +183,7 @@ ALTER TABLE `book`
 -- Indexes for table `cartitems`
 --
 ALTER TABLE `cartitems`
-  ADD PRIMARY KEY (`CartItemID`),
+  ADD PRIMARY KEY (`CartItemsID`),
   ADD KEY `cartID` (`CartID`),
   ADD KEY `itemID` (`ItemID`);
 
@@ -192,8 +192,7 @@ ALTER TABLE `cartitems`
 --
 ALTER TABLE `inventory`
   ADD PRIMARY KEY (`ItemID`),
-  ADD KEY `ItemName` (`ItemName`),
-  ADD KEY `ItemName_2` (`ItemName`);
+  ADD KEY `ItemName` (`ItemName`);
 
 --
 -- Indexes for table `movie`
@@ -236,7 +235,7 @@ ALTER TABLE `book`
 -- AUTO_INCREMENT for table `cartitems`
 --
 ALTER TABLE `cartitems`
-  MODIFY `CartItemID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `CartItemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `inventory`
@@ -267,23 +266,11 @@ ALTER TABLE `user`
 --
 
 --
--- Constraints for table `book`
---
-ALTER TABLE `book`
-  ADD CONSTRAINT `bookID` FOREIGN KEY (`BookID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `cartitems`
 --
 ALTER TABLE `cartitems`
   ADD CONSTRAINT `cartID` FOREIGN KEY (`CartID`) REFERENCES `shoppingcart` (`CartID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `itemID` FOREIGN KEY (`ItemID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `movie`
---
-ALTER TABLE `movie`
-  ADD CONSTRAINT `movieID` FOREIGN KEY (`MovieID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `shoppingcart`
