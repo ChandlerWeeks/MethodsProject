@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2022 at 07:28 PM
+-- Generation Time: Nov 24, 2022 at 11:24 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -59,6 +59,14 @@ CREATE TABLE `cartitems` (
   `Price` float DEFAULT NULL,
   `Quantity` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cartitems`
+--
+
+INSERT INTO `cartitems` (`CartItemsID`, `CartID`, `ItemID`, `ItemName`, `Price`, `Quantity`) VALUES
+(16, 1, 2, 'Jaws', 12.99, 1),
+(17, 1, 1, 'Wuthering Heights', 10.99, 1);
 
 -- --------------------------------------------------------
 
@@ -125,7 +133,6 @@ CREATE TABLE `order` (
 CREATE TABLE `orderitems` (
   `OrderitemsID` int(20) NOT NULL,
   `OrderID` int(20) DEFAULT NULL,
-  `UserID` int(20) DEFAULT NULL,
   `ItemID` int(20) DEFAULT NULL,
   `ItemName` char(20) DEFAULT NULL,
   `Price` float DEFAULT NULL
@@ -212,7 +219,9 @@ ALTER TABLE `movie`
 -- Indexes for table `order`
 --
 ALTER TABLE `order`
-  ADD PRIMARY KEY (`OrderID`);
+  ADD PRIMARY KEY (`OrderID`),
+  ADD KEY `ordercartID` (`CartID`),
+  ADD KEY `orderuserID` (`UserID`);
 
 --
 -- Indexes for table `orderitems`
@@ -220,7 +229,6 @@ ALTER TABLE `order`
 ALTER TABLE `orderitems`
   ADD PRIMARY KEY (`OrderitemsID`),
   ADD KEY `orderID` (`OrderID`),
-  ADD KEY `orderuserID` (`UserID`),
   ADD KEY `orderitemID` (`ItemID`);
 
 --
@@ -251,7 +259,7 @@ ALTER TABLE `book`
 -- AUTO_INCREMENT for table `cartitems`
 --
 ALTER TABLE `cartitems`
-  MODIFY `CartItemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `CartItemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `inventory`
@@ -295,12 +303,18 @@ ALTER TABLE `cartitems`
   ADD CONSTRAINT `itemID` FOREIGN KEY (`ItemID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `order`
+--
+ALTER TABLE `order`
+  ADD CONSTRAINT `ordercartID` FOREIGN KEY (`CartID`) REFERENCES `shoppingcart` (`CartID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orderuserID` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `orderitems`
 --
 ALTER TABLE `orderitems`
   ADD CONSTRAINT `orderID` FOREIGN KEY (`OrderID`) REFERENCES `order` (`OrderID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `orderitemID` FOREIGN KEY (`ItemID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `orderuserID` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `orderitemID` FOREIGN KEY (`ItemID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `shoppingcart`
