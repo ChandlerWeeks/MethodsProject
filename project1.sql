@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2022 at 06:10 AM
+-- Generation Time: Nov 24, 2022 at 07:28 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -59,14 +59,6 @@ CREATE TABLE `cartitems` (
   `Price` float DEFAULT NULL,
   `Quantity` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `cartitems`
---
-
-INSERT INTO `cartitems` (`CartItemsID`, `CartID`, `ItemID`, `ItemName`, `Price`, `Quantity`) VALUES
-(6, 1, 1, 'Wuthering Heights', 10.99, 2),
-(15, 1, 2, 'Jaws', 12.99, 2);
 
 -- --------------------------------------------------------
 
@@ -135,6 +127,7 @@ CREATE TABLE `orderitems` (
   `OrderID` int(20) DEFAULT NULL,
   `UserID` int(20) DEFAULT NULL,
   `ItemID` int(20) DEFAULT NULL,
+  `ItemName` char(20) DEFAULT NULL,
   `Price` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -192,8 +185,7 @@ INSERT INTO `user` (`Email`, `Password`, `FirstName`, `LastName`, `AddressLine`,
 -- Indexes for table `book`
 --
 ALTER TABLE `book`
-  ADD PRIMARY KEY (`BookID`),
-  ADD KEY `Title` (`Title`);
+  ADD PRIMARY KEY (`BookID`);
 
 --
 -- Indexes for table `cartitems`
@@ -214,8 +206,7 @@ ALTER TABLE `inventory`
 -- Indexes for table `movie`
 --
 ALTER TABLE `movie`
-  ADD PRIMARY KEY (`MovieID`),
-  ADD KEY `Title` (`Title`);
+  ADD PRIMARY KEY (`MovieID`);
 
 --
 -- Indexes for table `order`
@@ -227,7 +218,10 @@ ALTER TABLE `order`
 -- Indexes for table `orderitems`
 --
 ALTER TABLE `orderitems`
-  ADD PRIMARY KEY (`OrderitemsID`);
+  ADD PRIMARY KEY (`OrderitemsID`),
+  ADD KEY `orderID` (`OrderID`),
+  ADD KEY `orderuserID` (`UserID`),
+  ADD KEY `orderitemID` (`ItemID`);
 
 --
 -- Indexes for table `shoppingcart`
@@ -251,7 +245,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `BookID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `BookID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `cartitems`
@@ -263,7 +257,7 @@ ALTER TABLE `cartitems`
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `ItemID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ItemID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `movie`
@@ -299,6 +293,14 @@ ALTER TABLE `user`
 ALTER TABLE `cartitems`
   ADD CONSTRAINT `cartID` FOREIGN KEY (`CartID`) REFERENCES `shoppingcart` (`CartID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `itemID` FOREIGN KEY (`ItemID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `orderitems`
+--
+ALTER TABLE `orderitems`
+  ADD CONSTRAINT `orderID` FOREIGN KEY (`OrderID`) REFERENCES `order` (`OrderID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orderitemID` FOREIGN KEY (`ItemID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orderuserID` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `shoppingcart`
