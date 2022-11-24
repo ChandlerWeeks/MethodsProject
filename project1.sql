@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 23, 2022 at 06:25 AM
+-- Generation Time: Nov 24, 2022 at 06:10 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -65,7 +65,8 @@ CREATE TABLE `cartitems` (
 --
 
 INSERT INTO `cartitems` (`CartItemsID`, `CartID`, `ItemID`, `ItemName`, `Price`, `Quantity`) VALUES
-(6, 1, 1, 'Wuthering Heights', 10.99, 1);
+(6, 1, 1, 'Wuthering Heights', 10.99, 2),
+(15, 1, 2, 'Jaws', 12.99, 2);
 
 -- --------------------------------------------------------
 
@@ -120,8 +121,21 @@ CREATE TABLE `order` (
   `OrderID` int(20) NOT NULL,
   `CartID` int(20) DEFAULT NULL,
   `UserID` int(20) DEFAULT NULL,
-  `ItemID` int(20) DEFAULT NULL,
   `Price` double(20,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orderitems`
+--
+
+CREATE TABLE `orderitems` (
+  `OrderitemsID` int(20) NOT NULL,
+  `OrderID` int(20) DEFAULT NULL,
+  `UserID` int(20) DEFAULT NULL,
+  `ItemID` int(20) DEFAULT NULL,
+  `Price` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -140,7 +154,8 @@ CREATE TABLE `shoppingcart` (
 --
 
 INSERT INTO `shoppingcart` (`CartID`, `UserID`) VALUES
-(1, 1);
+(1, 1),
+(2, 10);
 
 -- --------------------------------------------------------
 
@@ -166,7 +181,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`Email`, `Password`, `FirstName`, `LastName`, `AddressLine`, `City`, `State`, `ZipCode`, `CardNumber`, `UserID`) VALUES
-('test@test.com', 'test', 'Test', 'Dummy', '325 St', 'Starkville', 'MS', 39759, NULL, 1);
+('test@test.com', 'test', 'Test', 'Dummy', '325 St', 'Starkville', 'MS', 39759, NULL, 1),
+('fake@fake.com', 'test', 'John', 'Testman', '12 St.', 'Starkville', 'MS', 39759, 2147483647, 10);
 
 --
 -- Indexes for dumped tables
@@ -208,6 +224,12 @@ ALTER TABLE `order`
   ADD PRIMARY KEY (`OrderID`);
 
 --
+-- Indexes for table `orderitems`
+--
+ALTER TABLE `orderitems`
+  ADD PRIMARY KEY (`OrderitemsID`);
+
+--
 -- Indexes for table `shoppingcart`
 --
 ALTER TABLE `shoppingcart`
@@ -235,7 +257,7 @@ ALTER TABLE `book`
 -- AUTO_INCREMENT for table `cartitems`
 --
 ALTER TABLE `cartitems`
-  MODIFY `CartItemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `CartItemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `inventory`
@@ -250,16 +272,22 @@ ALTER TABLE `movie`
   MODIFY `MovieID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `orderitems`
+--
+ALTER TABLE `orderitems`
+  MODIFY `OrderitemsID` int(20) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `shoppingcart`
 --
 ALTER TABLE `shoppingcart`
-  MODIFY `CartID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `CartID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `UserID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `UserID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
