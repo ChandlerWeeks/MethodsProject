@@ -137,6 +137,7 @@ class ShoppingCart:
                 for i in range(item_quantity[x][0]):
                     cursor.execute(f"UPDATE inventory SET Stock=Stock-1 WHERE ItemName = '{item_name[x][0]}'")
                     connection.commit()
+                cursor.execute(f"DELETE FROM cartitems WHERE CartID = '{self.cartID[0][0]}'")
 
 
 user = 1
