@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2022 at 11:34 PM
+-- Generation Time: Nov 25, 2022 at 04:16 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -66,7 +66,7 @@ CREATE TABLE `cartitems` (
 
 INSERT INTO `cartitems` (`CartItemsID`, `CartID`, `ItemID`, `ItemName`, `Price`, `Quantity`) VALUES
 (16, 1, 2, 'Jaws', 12.99, 1),
-(17, 1, 1, 'Wuthering Heights', 10.99, 1);
+(17, 1, 1, 'Wuthering Heights', 10.99, 2);
 
 -- --------------------------------------------------------
 
@@ -87,8 +87,8 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`ItemID`, `ItemName`, `Price`, `Rating`, `Stock`) VALUES
-(1, 'Wuthering Heights', 10.99, 5, 1),
-(2, 'Jaws', 12.99, 4.5, 2);
+(1, 'Wuthering Heights', 10.99, 5, 6),
+(2, 'Jaws', 12.99, 4.5, 8);
 
 -- --------------------------------------------------------
 
@@ -114,30 +114,46 @@ INSERT INTO `movie` (`MovieID`, `Title`, `Publisher`, `Genre`, `Description`) VA
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order`
---
-
-CREATE TABLE `order` (
-  `OrderID` int(20) NOT NULL,
-  `CartID` int(20) DEFAULT NULL,
-  `UserID` int(20) DEFAULT NULL,
-  `Price` double(20,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `orderitems`
 --
 
 CREATE TABLE `orderitems` (
   `OrderitemsID` int(20) NOT NULL,
   `OrderID` int(20) DEFAULT NULL,
+  `UserID` int(20) DEFAULT NULL,
   `ItemID` int(20) DEFAULT NULL,
   `ItemName` char(20) DEFAULT NULL,
   `Price` float DEFAULT NULL,
   `Quantity` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `orderitems`
+--
+
+INSERT INTO `orderitems` (`OrderitemsID`, `OrderID`, `UserID`, `ItemID`, `ItemName`, `Price`, `Quantity`) VALUES
+(17, 49, 1, 2, 'Jaws', 12.99, 1),
+(18, 49, 1, 1, 'Wuthering Heights', 10.99, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `OrderID` int(20) NOT NULL,
+  `CartID` int(20) DEFAULT NULL,
+  `UserID` int(20) DEFAULT NULL,
+  `Price` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`OrderID`, `CartID`, `UserID`, `Price`) VALUES
+(49, 1, 1, 34.97);
 
 -- --------------------------------------------------------
 
@@ -217,20 +233,21 @@ ALTER TABLE `movie`
   ADD PRIMARY KEY (`MovieID`);
 
 --
--- Indexes for table `order`
---
-ALTER TABLE `order`
-  ADD PRIMARY KEY (`OrderID`),
-  ADD KEY `ordercartID` (`CartID`),
-  ADD KEY `orderuserID` (`UserID`);
-
---
 -- Indexes for table `orderitems`
 --
 ALTER TABLE `orderitems`
   ADD PRIMARY KEY (`OrderitemsID`),
+  ADD KEY `orderitemID` (`ItemID`),
   ADD KEY `orderID` (`OrderID`),
-  ADD KEY `orderitemID` (`ItemID`);
+  ADD KEY `orderitem_userID` (`UserID`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`OrderID`),
+  ADD KEY `ordercartID` (`CartID`),
+  ADD KEY `orderuserID` (`UserID`);
 
 --
 -- Indexes for table `shoppingcart`
@@ -278,7 +295,13 @@ ALTER TABLE `movie`
 -- AUTO_INCREMENT for table `orderitems`
 --
 ALTER TABLE `orderitems`
-  MODIFY `OrderitemsID` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `OrderitemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `OrderID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `shoppingcart`
@@ -304,18 +327,19 @@ ALTER TABLE `cartitems`
   ADD CONSTRAINT `itemID` FOREIGN KEY (`ItemID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `order`
---
-ALTER TABLE `order`
-  ADD CONSTRAINT `ordercartID` FOREIGN KEY (`CartID`) REFERENCES `shoppingcart` (`CartID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `orderuserID` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `orderitems`
 --
 ALTER TABLE `orderitems`
-  ADD CONSTRAINT `orderID` FOREIGN KEY (`OrderID`) REFERENCES `order` (`OrderID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `orderitemID` FOREIGN KEY (`ItemID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `orderID` FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orderitemID` FOREIGN KEY (`ItemID`) REFERENCES `inventory` (`ItemID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orderitem_userID` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `ordercartID` FOREIGN KEY (`CartID`) REFERENCES `shoppingcart` (`CartID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `orderuserID` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `shoppingcart`
