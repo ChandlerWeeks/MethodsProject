@@ -1,12 +1,21 @@
 import mysql.connector
 import uuid
+import sys
 
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="",
-    database="project1")
-my_cursor = db.cursor()
+try:
+    connection = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="project1"
+    )
+
+    print("Successful connection.")
+except:
+    print("Failed connection.")
+    sys.exit()
+
+cursor = connection.cursor()
 
 
 class User:
@@ -21,50 +30,50 @@ class User:
         self.zip_code = zip_code
         self.card = card
         self.user_ID = uuid.uuid4()  # creates a unique id for each user
-        my_cursor.execute('INSERT INTO user (Email, Password, FirstName, LastName, AddressLine, City, State, ZipCode, CardNumber, UserID) VALUES ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}")'.format
+        cursor.execute('INSERT INTO user (Email, Password, FirstName, LastName, AddressLine, City, State, ZipCode, CardNumber, UserID) VALUES ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}")'.format
                           (self.email, self.password, self.first, self.last, self.address_line, self.city, self.state, self.zip_code, self.card, self.user_ID))
-        db.commit()
-
+        connection.commit()
 
     def delete_user(self):
-        my_cursor.execute("DELETE * FROM `user` WHERE UserID = " + self.user_ID)
+        cursor.execute("DELETE * FROM `user` WHERE UserID = '" + self.user_ID + "'")
         del self;
+        connection.commit();
 
     def set_email(self, email):
         self.email = email
-        my_cursor.execute("UPDATE user SET Email = " + email + " WHERE UserID = " + self.user_ID)
+        cursor.execute("UPDATE user SET Email = '" + email + "' WHERE UserID = '" + self.user_ID + "'")
 
     def set_password(self, password):
         self.password = password
-        my_cursor.execute("UPDATE user SET Password = " + password + " WHERE UserID = " + self.user_ID)
+        cursor.execute("UPDATE user SET Password = '" + password + "' WHERE UserID = '" + self.user_ID + "'")
 
     def set_first(self, first):
         self.first = first;
-        my_cursor.execute("UPDATE user SET FirstName = " + first + " WHERE UserID = " + self.user_ID)
+        cursor.execute("UPDATE user SET FirstName = '" + first + "' WHERE UserID = '" + self.user_ID + "'")
 
     def set_last(self, last):
         self.last = last;
-        my_cursor.execute("UPDATE user SET LastName = " + last + " WHERE UserID = " + self.user_ID)
+        cursor.execute("UPDATE user SET LastName = '" + last + "' WHERE UserID = '" + self.user_ID + "'")
 
     def set_address_line(self, address):
         self.address_line = address;
-        my_cursor.execute("UPDATE user SET AddressLine = " + address + " WHERE UserID = " + self.user_ID)
+        cursor.execute("UPDATE user SET AddressLine = '" + address + "' WHERE UserID = '" + self.user_ID + "'")
 
     def set_city(self, city):
         self.city = city
-        my_cursor.execute("UPDATE user SET City = " + city + " WHERE UserID = " + self.user_ID)
+        cursor.execute("UPDATE user SET City = '" + city + "' WHERE UserID = '" + self.user_ID + "'")
 
     def set_state(self, state):
         self.state = state
-        my_cursor.execute("UPDATE user SET State = " + state + " WHERE UserID = " + self.user_ID)
+        cursor.execute("UPDATE user SET State = '" + state + "' WHERE UserID = '" + self.user_ID + "'")
 
     def set_zip(self, zip_code):
         self.zip_code = zip_code
-        my_cursor.execute("UPDATE user SET ZipCode = " + zip_code + " WHERE UserID = " + self.user_ID)
+        cursor.execute("UPDATE user SET ZipCode = '" + zip_code + "' WHERE UserID = '" + self.user_ID + "'")
 
     def set_card(self, card):
         self.card = card
-        my_cursor.execute("UPDATE user SET Card = " + card + " WHERE UserID = " + self.user_ID)
+        cursor.execute("UPDATE user SET Card = '" + card + "' WHERE UserID = '" + self.user_ID + "'")
 
     def update_address(self):
         address = input("What is your new address line")
@@ -76,11 +85,9 @@ class User:
         self.set_city(city)
         self.set_state(state)
         self.set_zip(zip_code)
-        db.commit()
+        connection.commit()
 
     def update_payment(self):
         card = int(input("What is your card number: "))
         self.set_card(card)
-        db.commit()
-
-    def attemptLogin(self):
+        connection.commit()
