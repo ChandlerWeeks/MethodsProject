@@ -37,14 +37,14 @@ class Order:
     # getters per class diagram
     def get_CartID(self):
         cursor.execute("SELECT CartID FROM orders WHERE UserID = '{}'".format(self.userID))
-        self.cartID = cursor.fetchall()
+        return cursor.fetchall()
 
     def get_OrderID(self):
         cursor.execute("SELECT OrderID FROM orders WHERE UserID = '{}'".format(self.userID))
-        self.orderID = cursor.fetchall()
+        return cursor.fetchall()
 
     def get_OrderTime(self):
-        cursor.execute("SELECT * FROM orders WHERE orderTime = '{}'".format(self.orderTime))
+        cursor.execute("SELECT DateTime FROM orders WHERE UserID = '{}'".format(self.userID))
         return cursor.fetchall()
 
     def get_UserID(self):
@@ -52,11 +52,11 @@ class Order:
         return cursor.fetchall()
 
     def get_ItemID(self):
-        cursor.execute("SELECT ItemID FROM orders WHERE itemID = '{}'".format(self.itemID))
+        cursor.execute("SELECT ItemID FROM orderitems WHERE UserID = '{}'".format(self.userID))
         return cursor.fetchall()
 
     def get_Quanity(self):
-        cursor.execute("SELECT * FROM orders WHERE quantity = '{}'".format(self.quantity))
+        cursor.execute("SELECT Quantity FROM orderitems WHERE ItemID = '{}'".format(self.itemID))
         return cursor.fetchall()
 
     """def set_date(self, date):
@@ -90,7 +90,8 @@ class Order:
                 self.ordereditems[key].append(items)
         # if not just create new key value
         else:
-            dict1 = {self.userID: [items, date.today(), datetime.now()]}
+            self.orderTime = self.get_OrderTime()
+            dict1 = {self.userID: [items, self.orderTime]}
             self.ordereditems.update(dict1)
         # print values
         for key, value in self.ordereditems.items():
