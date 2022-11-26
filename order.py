@@ -98,6 +98,11 @@ class Order:
             if key == self.userID:
                 print(value)
 
+                
+# example method for datetime object printing
+# grabs tuple at that element in the dictionary and converts it into a properly formatted string
+"""for x in value[1][0]:
+    print(x.strftime("%m/%d/%Y %H:%M:%S"))"""
 
 userId = 1
 Order(userId).orderHistory()
