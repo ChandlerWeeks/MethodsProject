@@ -20,13 +20,13 @@ cursor = connection.cursor()
 
 # Getters all find matching items from table
 def get_item_ID(item_ID):
-    return cursor.execute("SELECT * FROM 'Inventory' WHERE itemID = '{}'".format(item_ID))
+    cursor.execute("SELECT * FROM 'Inventory' WHERE itemID = '{}'".format(item_ID))
+    return cursor.fetchall()
 
 
 def get_name(name):
-    return cursor.execute("SELECT * FROM 'Inventory' WHERE Name = '{}'".format(name))
-
-
+    cursor.execute("SELECT * FROM 'Inventory' WHERE Name = '{}'".format(name))
+    return cursor.fetchall()
 
 
 class Inventory:

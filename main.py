@@ -1,4 +1,4 @@
-from User import User
+from User import *
 import mysql.connector
 import sys
 
@@ -10,6 +10,7 @@ try:
         database="project1"
     )
 
+
 except:
     print("Failed connection.")
     sys.exit()
@@ -17,7 +18,7 @@ except:
 cursor = connection.cursor()
 
 
-def createUser():
+def create_user():
     print("Please insert the following information to create an account: ")
     email = input("Enter email address: ")
     password = input("Enter account password: ")
@@ -49,15 +50,22 @@ def login():
     return None
 
 
-def loggedInLoop(userID):
+def logged_in_loop(userID):
+    logged_in_user = get_user(userID)  # stores the logged in user in a variable
     while(True):
         print("Logged in successfully\n")
         command = input(
             "What would you like to do:\n"
             "delete - delete your account\n"
             "update - update account information\n"
-            "logout - log out of your account"
-            "exit - Exit program\n"
+            "logout - log out of your account\n"
+            "history - view your order history\n"
+            "view - display all the merchandise in a category\n"
+            "cart - views the contents of a users shopping cart\n"
+            "add - add an item to a shopping cart \n"
+            "remove - remove an item from the shopping cart\n"
+            "checkout - check out the items in a shopping cart \n"
+            "exit - exit program\n"
             ">> "
         )
         if command == 'exit':
@@ -72,7 +80,7 @@ def loggedInLoop(userID):
             break
 
 
-def startLoop():
+def start_loop():
     while True:
         command = input(
             "What would you like to do:\n"
@@ -83,22 +91,23 @@ def startLoop():
         )
         if(command == "exit"):
             print("Closing...")
-            sys.exit
+            sys.exit()
         elif (command == "login"):
             user = login()
             if (user == None):
                 print("Failed to log in\n")
                 continue
             else:
-                loggedInLoop(user)
+                logged_in_loop(user)
+                continue
         elif (command == "create"):
-            createUser()
+            create_user()
         else:
             print("Command does not exist")
             continue
 
 
 if __name__ == '__main__':
-    startLoop()
+    start_loop()
 
 
