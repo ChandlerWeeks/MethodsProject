@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2022 at 04:16 AM
+-- Generation Time: Nov 26, 2022 at 08:44 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -60,14 +60,6 @@ CREATE TABLE `cartitems` (
   `Quantity` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `cartitems`
---
-
-INSERT INTO `cartitems` (`CartItemsID`, `CartID`, `ItemID`, `ItemName`, `Price`, `Quantity`) VALUES
-(16, 1, 2, 'Jaws', 12.99, 1),
-(17, 1, 1, 'Wuthering Heights', 10.99, 2);
-
 -- --------------------------------------------------------
 
 --
@@ -87,7 +79,7 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`ItemID`, `ItemName`, `Price`, `Rating`, `Stock`) VALUES
-(1, 'Wuthering Heights', 10.99, 5, 6),
+(1, 'Wuthering Heights', 10.99, 5, 7),
 (2, 'Jaws', 12.99, 4.5, 8);
 
 -- --------------------------------------------------------
@@ -132,8 +124,7 @@ CREATE TABLE `orderitems` (
 --
 
 INSERT INTO `orderitems` (`OrderitemsID`, `OrderID`, `UserID`, `ItemID`, `ItemName`, `Price`, `Quantity`) VALUES
-(17, 49, 1, 2, 'Jaws', 12.99, 1),
-(18, 49, 1, 1, 'Wuthering Heights', 10.99, 2);
+(26, 60, 1, 1, 'Wuthering Heights', 10.99, 1);
 
 -- --------------------------------------------------------
 
@@ -145,15 +136,16 @@ CREATE TABLE `orders` (
   `OrderID` int(20) NOT NULL,
   `CartID` int(20) DEFAULT NULL,
   `UserID` int(20) DEFAULT NULL,
-  `Price` float DEFAULT NULL
+  `Price` float DEFAULT NULL,
+  `DateTime` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`OrderID`, `CartID`, `UserID`, `Price`) VALUES
-(49, 1, 1, 34.97);
+INSERT INTO `orders` (`OrderID`, `CartID`, `UserID`, `Price`, `DateTime`) VALUES
+(60, 1, 1, 10.99, '2022-11-26 13:41:40');
 
 -- --------------------------------------------------------
 
@@ -277,7 +269,7 @@ ALTER TABLE `book`
 -- AUTO_INCREMENT for table `cartitems`
 --
 ALTER TABLE `cartitems`
-  MODIFY `CartItemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `CartItemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `inventory`
@@ -295,13 +287,13 @@ ALTER TABLE `movie`
 -- AUTO_INCREMENT for table `orderitems`
 --
 ALTER TABLE `orderitems`
-  MODIFY `OrderitemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `OrderitemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `OrderID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `OrderID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `shoppingcart`
