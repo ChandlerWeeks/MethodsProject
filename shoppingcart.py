@@ -124,20 +124,26 @@ class ShoppingCart:
                 print('Sorry, unable to complete order.\n'
                       'Our stock may not be able to fulfill the order.')
             else:
-                if order_id is None:
-                    cursor.execute(f"INSERT INTO orders (CartID, UserID, Price) VALUES "
-                                   f"('{self.cartID[0][0]}', '{self.userID}', '{self.total_price}')")
-                    connection.commit()
-                    cursor.execute(f"SELECT OrderID FROM orders WHERE UserID='{self.userID}'")
-                    order_id = cursor.fetchall()
+                try:
+                    if order_id is None:
+                        cursor.execute(f"INSERT INTO orders (CartID, UserID, Price) VALUES "
+                                       f"('{self.cartID[0][0]}', '{self.userID}', '{self.total_price}')")
+                        connection.commit()
+                        cursor.execute(f"SELECT OrderID FROM orders WHERE UserID='{self.userID}'")
+                        order_id = cursor.fetchall()
+                    else:
+                        cursor.execute(f"SELECT OrderID FROM orders WHERE UserID='{self.userID}'")
+                        order_id = cursor.fetchall()
 
-                cursor.execute(f"INSERT INTO orderitems (OrderID, userID, ItemID, ItemName, Price, Quantity) VALUES "
-                               f"('{order_id[0][0]}', '{self.userID}', '{item_id[x][0]}', '{item_name[x][0]}', "
-                               f"'{item_price[x][0]}', '{item_quantity[x][0]}')")
-                connection.commit()
-                for i in range(item_quantity[x][0]):
-                    cursor.execute(f"UPDATE inventory SET Stock=Stock-1 WHERE ItemName = '{item_name[x][0]}'")
+                    cursor.execute(f"INSERT INTO orderitems (OrderID, userID, ItemID, ItemName, Price, Quantity) VALUES "
+                                   f"('{order_id[0][0]}', '{self.userID}', '{item_id[x][0]}', '{item_name[x][0]}', "
+                                   f"'{item_price[x][0]}', '{item_quantity[x][0]}')")
                     connection.commit()
-                cursor.execute(f"DELETE FROM cartitems WHERE CartID = '{self.cartID[0][0]}'")
-                connection.commit()
-                print('Checkout complete.')
+                    for i in range(item_quantity[x][0]):
+                        cursor.execute(f"UPDATE inventory SET Stock=Stock-1 WHERE ItemName = '{item_name[x][0]}'")
+                        connection.commit()
+                    cursor.execute(f"DELETE FROM cartitems WHERE CartID = '{self.cartID[0][0]}'")
+                    connection.commit()
+                except Exception as e:
+                    print('Something went wrong', e)
+        print('Checkout complete.')
