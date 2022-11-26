@@ -90,7 +90,7 @@ class ShoppingCart:
                       '2) Go back ')
                 prompt = int(input())
                 if prompt == 1:
-                    ShoppingCart(user).removeItem(input('Enter the name of the item you wish to remove: '))
+                    ShoppingCart(self.userID).removeItem(input('Enter the name of the item you wish to remove: '))
                 elif prompt == 2:
                     return
             else:
@@ -101,6 +101,7 @@ class ShoppingCart:
                     return
 
     def checkout(self):
+        order_id = None
         cursor.execute(f"SELECT ItemID FROM cartitems WHERE CartID='{self.cartID[0][0]}'")
         item_id = cursor.fetchall()
 
@@ -113,13 +114,6 @@ class ShoppingCart:
         cursor.execute(f"SELECT Quantity FROM cartitems WHERE CartID='{self.cartID[0][0]}'")
         item_quantity = cursor.fetchall()
 
-        cursor.execute(f"INSERT INTO orders (CartID, UserID, Price) VALUES "
-                       f"('{self.cartID[0][0]}', '{self.userID}', '{self.total_price}')")
-        connection.commit()
-
-        cursor.execute(f"SELECT OrderID FROM orders WHERE UserID='{self.userID}'")
-        order_id = cursor.fetchall()
-
         for x in range(len(self.cart)):
             cursor.execute(f"SELECT ItemID FROM inventory WHERE ItemName='{item_name[x][0]}'")
             item_stock_id = cursor.fetchall()
@@ -130,6 +124,13 @@ class ShoppingCart:
                 print('Sorry, unable to complete order.\n'
                       'Our stock may not be able to fulfill the order.')
             else:
+                if order_id is None:
+                    cursor.execute(f"INSERT INTO orders (CartID, UserID, Price) VALUES "
+                                   f"('{self.cartID[0][0]}', '{self.userID}', '{self.total_price}')")
+                    connection.commit()
+                    cursor.execute(f"SELECT OrderID FROM orders WHERE UserID='{self.userID}'")
+                    order_id = cursor.fetchall()
+
                 cursor.execute(f"INSERT INTO orderitems (OrderID, userID, ItemID, ItemName, Price, Quantity) VALUES "
                                f"('{order_id[0][0]}', '{self.userID}', '{item_id[x][0]}', '{item_name[x][0]}', "
                                f"'{item_price[x][0]}', '{item_quantity[x][0]}')")
@@ -138,3 +139,5 @@ class ShoppingCart:
                     cursor.execute(f"UPDATE inventory SET Stock=Stock-1 WHERE ItemName = '{item_name[x][0]}'")
                     connection.commit()
                 cursor.execute(f"DELETE FROM cartitems WHERE CartID = '{self.cartID[0][0]}'")
+                connection.commit()
+                print('Checkout complete.')
