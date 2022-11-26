@@ -100,9 +100,10 @@ class Order:
 
                 
 # example method for datetime object printing
-# grabs tuple at that element in the dictionary and converts it into a properly formatted string
-"""for x in value[1][0]:
-    print(x.strftime("%m/%d/%Y %H:%M:%S"))"""
+# grabs datetime tuples at that element in the dictionary and converts them into a properly formatted string
+"""for x in range(len(value[1])):
+    for i in value[1][x]:
+        print(i.strftime("%m/%d/%Y %H:%M:%S"))"""
 
 userId = 1
 Order(userId).orderHistory()
