@@ -100,7 +100,7 @@ class Order:
 
                 
 # example method for datetime object printing
-# grabs datetime tuples at that element in the dictionary and converts them into a properly formatted string
+# grabs datetime tuples at that element and converts them into a properly formatted string
 """for x in range(len(value[1])):
     for i in value[1][x]:
         print(i.strftime("%m/%d/%Y %H:%M:%S"))"""
