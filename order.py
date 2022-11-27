@@ -104,7 +104,7 @@ class Order:
         for key, value in self.ordereditems.items():
             if key == self.userID:
                 for i in range(len(value[0])):
-                    print(value[0][i], value[1][i])
+                    print(value[0][i], value[1][i]\n)
              
 # example method for datetime object printing
 # grabs datetime tuples at that element and converts them into a properly formatted string
