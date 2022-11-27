@@ -84,21 +84,28 @@ class Order:
         itemsOrdered = "SELECT ItemName FROM orderitems WHERE userID = '{}'".format(self.userID)
         cursor.execute(itemsOrdered)
         items = cursor.fetchall()
+        
+        cursor.execute("SELECT DateTime FROM order WHERE userID = '{}'".format(self.userID))
+        time = cursor.fetchall()
+       #format the time but since tuples immutable convert to list, change time, convert to tuple 
+        list2 = list(time)
+        for x in range(len(list2)):
+            list2[x] = x.strftime("%m/%d/%Y %H:%M:%S"))
+        time = tuple(list2)
         # checking if user already made an order
         for key in self.ordereditems:
             if key == self.userID:
-                self.ordereditems[key].append(items)
+                self.ordereditems[key].append(items,time)
         # if not just create new key value
         else:
-            self.orderTime = self.get_OrderTime()
-            dict1 = {self.userID: [items, self.orderTime]}
+            dict1 = {self.userID: [items,time]}
             self.ordereditems.update(dict1)
         # print values
         for key, value in self.ordereditems.items():
             if key == self.userID:
-                print(value)
-
-                
+                for i in range(len(value[0])):
+                    print(value[0][i], value[1][i])
+             
 # example method for datetime object printing
 # grabs datetime tuples at that element and converts them into a properly formatted string
 """for x in range(len(value[1])):
