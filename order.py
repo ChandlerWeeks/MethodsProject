@@ -79,7 +79,7 @@ class Order:
         for key, value in self.ordereditems.items():
             if key == self.userID:
                 value = ""
-
+#add price and order id
     def orderHistory(self):
         itemsOrdered = "SELECT ItemName FROM orderitems WHERE userID = '{}'".format(self.userID)
         cursor.execute(itemsOrdered)
