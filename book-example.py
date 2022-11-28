@@ -27,7 +27,7 @@ class Book:
         self.book_list = cursor.fetchall()
 
         for x in range(len(self.book_list)):
-            print(f'{self.book_list[x][1]}', 'ISBN:', f'${self.book_list[x][2]}', 'Author:', f'{self.book_list[x][3]}')
+            print(f'Title: {self.book_list[x][1]}', f'ISBN: {self.book_list[x][2]}', f'Author: {self.book_list[x][3]}')
 
 
 Book().display_books()
