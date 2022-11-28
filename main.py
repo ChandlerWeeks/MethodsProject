@@ -1,4 +1,9 @@
 from User import *
+from Inventory import *
+from shoppingcart import *
+from order import *
+from Book import *
+from Movie import *
 import mysql.connector
 import sys
 
@@ -16,38 +21,6 @@ except:
     sys.exit()
 
 cursor = connection.cursor()
-
-
-def create_user():
-    print("Please insert the following information to create an account: ")
-    email = input("Enter email address: ")
-    password = input("Enter account password: ")
-    first = input("Enter your first name: ")
-    last = input("Enter your last name: ")
-    address = input("Enter your address line: ")
-    city = input("Enter your city: ")
-    state = input("Enter your state: ")
-    zip_code = int(input("Enter your zip code: "))
-    card = int(input("Enter your card number: "))
-
-    temp = User(email, password, first, last, address, city, state, zip_code, card)
-    return temp
-
-
-# Asks a user for a username and password, and finds its matching pair in the table, returns none if no match is found
-def login():
-    email = input("What is your email address: ")
-    password = input("What is your password: ")
-    cursor.execute("SELECT Password FROM user WHERE Email = '{}'".format(email))
-    found_password = cursor.fetchone()
-    for x in range(len(found_password)):
-        print(found_password[x])
-        print(password)
-        if found_password[x] == password:
-            cursor.execute("Select UserID FROM user WHERE Email = '{}'".format(email))
-            userID = cursor.fetchone()
-            return userID[0]
-    return None
 
 
 def logged_in_loop(userID):
@@ -72,9 +45,10 @@ def logged_in_loop(userID):
             print("Closing...")
             sys.exit()
         elif command == 'delete':
-            break #placeholder
+            logged_in_user.delete_user()
+            break
         elif command == 'update':
-            break #placeholder
+            update_user(logged_in_user)
         elif command == "logout":
             print("Logging out...")
             break
@@ -91,18 +65,18 @@ def start_loop():
             "exit - Exit program\n"
             ">> "
         )
-        if(command == "exit"):
+        if command == "exit":
             print("Closing...")
             sys.exit()
-        elif (command == "login"):
+        elif command == "login":
             user = login()
-            if (user == None):
+            if user == None:
                 print("Failed to log in\n")
                 continue
             else:
                 logged_in_loop(user)
                 continue
-        elif (command == "create"):
+        elif command == "create":
             create_user()
         else:
             print("Command does not exist")

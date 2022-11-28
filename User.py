@@ -9,13 +9,61 @@ try:
         password="",
         database="project1"
     )
-
-    print("Successful connection.")
 except:
     print("Failed connection.")
     sys.exit()
 
 cursor = connection.cursor()
+
+
+def update_user(user):
+    arg = input("Would you like to update your card information(card) or address(address): ")
+    if arg == "card":
+        user.update_payment()
+    elif arg == "address":
+        user.update_address()
+    else:
+        print("Invalid input, cannot update " + arg)
+
+
+# Create a new user object
+def create_user():
+    print("Please insert the following information to create an account: ")
+    email = input("Enter email address: ")
+
+    cursor.execute("SELECT * FROM USER WHERE Email = '{}'".format(email))
+    temp = cursor.fetchall()
+    if len(temp) > 0:
+        print("Email already exists")
+        return
+
+    password = input("Enter account password: ")
+    first = input("Enter your first name: ")
+    last = input("Enter your last name: ")
+    address = input("Enter your address line: ")
+    city = input("Enter your city: ")
+    state = input("Enter your state: ")
+    zip_code = int(input("Enter your zip code: "))
+    card = int(input("Enter your card number: "))
+
+    temp = User(email, password, first, last, address, city, state, zip_code, card)
+    return temp
+
+
+# Asks a user for a username and password, and finds its matching pair in the table, returns none if no match is found
+def login():
+    email = input("What is your email address: ")
+    password = input("What is your password: ")
+    cursor.execute("SELECT Password FROM user WHERE Email = '{}'".format(email))
+    found_password = cursor.fetchone()
+    for x in range(len(found_password)):
+        print(found_password[x])
+        print(password)
+        if found_password[x] == password:
+            cursor.execute("Select UserID FROM user WHERE Email = '{}'".format(email))
+            userID = cursor.fetchone()
+            return userID[0]
+    return None
 
 
 def get_user(user_ID):
@@ -56,7 +104,8 @@ class User:
         self.user_ID = user_ID
 
     def delete_user(self):
-        cursor.execute("DELETE * FROM `user` WHERE UserID = '" + str(self.user_ID) + "'")
+        cursor.execute("DELETE FROM user WHERE UserID = '" + str(self.user_ID) + "'")
+        cursor.execute("DELETE FROM shoppingcart WHERE UserID = '{}'".format(self.user_ID))
         del self
         connection.commit()
 

@@ -8,9 +8,6 @@ try:
         password="",
         database="project1"
     )
-
-    print("Successful connection.")
-
 except:
     print("Failed connection.")
     sys.exit()
@@ -28,5 +25,3 @@ class Movie:
 
         for x in self.movie_list:
             print(x)
-
-Movie().display_movies()

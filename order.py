@@ -11,8 +11,6 @@ try:
         database="project1"
     )
 
-    print("Successful connection.")
-
 except:
     print("Failed connection.")
     sys.exit()
