@@ -78,6 +78,8 @@ def logged_in_loop(userID):
         elif command == "logout":
             print("Logging out...")
             break
+        elif command == 'history':
+            Order(userID).orderHistory()
 
 
 def start_loop():
