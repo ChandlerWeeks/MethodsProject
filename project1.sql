@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2022 at 12:20 PM
+-- Generation Time: Nov 28, 2022 at 11:45 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -44,7 +44,7 @@ CREATE TABLE `book` (
 
 INSERT INTO `book` (`BookID`, `Title`, `ISBN`, `Author`, `Genre`, `Count`, `Style`, `Pages`) VALUES
 (1, 'Wuthering Heights', '978-0593244036', 'Emily Bronte', 'Gothic Literature', 1, NULL, NULL),
-(2, '1984', '9787205076900', 'George Orwell', 'Dystopian Fiction', 1, NULL, NULL);
+(2, '1984', '978-7205076900', 'George Orwell', 'Dystopian Fiction', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -89,7 +89,8 @@ CREATE TABLE `inventory` (
 
 INSERT INTO `inventory` (`ItemID`, `ItemName`, `Price`, `Rating`, `Stock`) VALUES
 (1, 'Wuthering Heights', 10.99, 5, 48),
-(2, 'Jaws', 12.99, 4.5, 48);
+(2, 'Jaws', 12.99, 4.5, 48),
+(9, '1984', 9.99, 4.9, 50);
 
 -- --------------------------------------------------------
 
@@ -288,7 +289,7 @@ ALTER TABLE `cartitems`
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `ItemID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `ItemID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `movie`
