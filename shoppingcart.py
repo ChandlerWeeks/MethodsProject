@@ -35,12 +35,6 @@ class ShoppingCart:
             cursor.execute(f"INSERT INTO shoppingcart (UserID) VALUES ('{self.userID}')")
             connection.commit()
 
-        cursor.execute(f"SELECT ItemName, Price, Quantity FROM cartitems WHERE cartID = '{self.cartID[0][0]}'")
-        self.cart = cursor.fetchall()
-
-        for x in range(len(self.cart)):
-            self.total_price += float(self.cart[x][1] * self.cart[x][2])
-
     def addItem(self, item):
         cursor.execute(f"SELECT ItemID FROM inventory WHERE ItemName='{item}'")
         item_id = cursor.fetchall()
@@ -79,6 +73,12 @@ class ShoppingCart:
             connection.commit()
 
     def displayCart(self):
+        cursor.execute(f"SELECT ItemName, Price, Quantity FROM cartitems WHERE cartID = '{self.cartID[0][0]}'")
+        self.cart = cursor.fetchall()
+
+        for x in range(len(self.cart)):
+            self.total_price += float(self.cart[x][1] * self.cart[x][2])
+            
         while True:
             if len(self.cart) != 0:
                 for x in range(len(self.cart)):
@@ -87,17 +87,21 @@ class ShoppingCart:
                 print("Total Price:", f'${self.total_price}')
                 print('1) Remove item\n'
                       '2) Go back ')
-                prompt = int(input())
-                if prompt == 1:
+                prompt = (input())
+                if prompt == '1':
                     ShoppingCart(self.userID).removeItem(input('Enter the name of the item you wish to remove: '))
-                elif prompt == 2:
+                elif prompt == '2':
                     return
+                else:
+                    continue
             else:
                 print('Cart is empty.\n'
                       '1) Go back')
                 prompt = int(input())
-                if prompt == 1:
+                if prompt == '1':
                     return
+                else:
+                    continue
 
     def checkout(self):
         order_id = None
