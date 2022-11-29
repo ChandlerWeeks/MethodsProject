@@ -35,7 +35,7 @@ class ShoppingCart:
             cursor.execute(f"INSERT INTO shoppingcart (UserID) VALUES ('{self.userID}')")
             connection.commit()
 
-        cursor.execute(f"SELECT ItemName, Price, Quantity FROM cartitems WHERE cartID = {self.cartID[0][0]}")
+        cursor.execute(f"SELECT ItemName, Price, Quantity FROM cartitems WHERE cartID = '{self.cartID[0][0]}'")
         self.cart = cursor.fetchall()
 
         for x in range(len(self.cart)):
