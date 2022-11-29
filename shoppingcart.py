@@ -9,6 +9,8 @@ try:
         database="project1"
     )
 
+    print("Successful connection.")
+
 except:
     print("Failed connection.")
     sys.exit()
@@ -23,15 +25,14 @@ class ShoppingCart:
         self.total_price = 0
         self.userID = userID
 
-        cursor.execute(f"SELECT cartID FROM shoppingcart WHERE UserID = {self.userID}")
+        cursor.execute(f"SELECT cartID FROM shoppingcart WHERE UserID = '{self.userID}'")
         self.cartID = cursor.fetchall()
 
-        if self.cartID is not None:
+        if len(self.cartID) != 0:
             pass
         else:
-            cursor.execute(f"SELECT UserID FROM user WHERE UserID = {userID}")
-            self.cartID += cursor.fetchall()
-            cursor.executemany(f"INSERT INTO shoppingcart (UserID) VALUES (%s)", self.cart[0][0])
+            print(self.cartID)
+            cursor.execute(f"INSERT INTO shoppingcart (UserID) VALUES ('{self.userID}')")
             connection.commit()
 
         cursor.execute(f"SELECT ItemName, Price, Quantity FROM cartitems WHERE cartID = {self.cartID[0][0]}")
