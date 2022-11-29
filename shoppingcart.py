@@ -97,7 +97,7 @@ class ShoppingCart:
             else:
                 print('Cart is empty.\n'
                       '1) Go back')
-                prompt = int(input())
+                prompt = input()
                 if prompt == '1':
                     return
                 else:
