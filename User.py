@@ -75,7 +75,7 @@ def get_user(user_ID):
 
 
 class User:
-    def __init__(self, email, password, first, last, address_line, city, state, zip_code, card):
+    def __init__(self, email, password, first, last, address_line, city, state, zip_code, card, user_ID=None):
         self.email = email
         self.password = password
         self.first = first
@@ -85,23 +85,14 @@ class User:
         self.state = state
         self.zip_code = zip_code
         self.card = card
-        self.user_ID = uuid.uuid4()  # creates a unique id for each user
-        cursor.execute('INSERT INTO user (Email, Password, FirstName, LastName, AddressLine, City, State, ZipCode, CardNumber, UserID) VALUES ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}")'.format
+        if user_ID == None:
+            self.user_ID = uuid.uuid4()  # creates a unique id for each user
+            cursor.execute('INSERT INTO user (Email, Password, FirstName, LastName, AddressLine, City, State, ZipCode, CardNumber, UserID) VALUES ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}")'.format
                           (self.email, self.password, self.first, self.last, self.address_line, self.city, self.state, self.zip_code, self.card, self.user_ID))
-        connection.commit()
+            connection.commit()
+        else:
+            self.user_ID = user_ID
 
-
-    def __init__(self, email, password, first, last, address_line, city, state, zip_code, card, user_ID):
-        self.email = email
-        self.password = password
-        self.first = first
-        self.last = last
-        self.address_line = address_line
-        self.city = city
-        self.state = state
-        self.zip_code = zip_code
-        self.card = card
-        self.user_ID = user_ID
 
     def delete_user(self):
         cursor.execute("DELETE FROM user WHERE UserID = '" + str(self.user_ID) + "'")
@@ -139,17 +130,17 @@ class User:
 
     def set_zip(self, zip_code):
         self.zip_code = zip_code
-        cursor.execute("UPDATE user SET ZipCode = '" + zip_code + "' WHERE UserID = '" + str(self.user_ID) + "'")
+        cursor.execute("UPDATE user SET ZipCode = '" + str(zip_code) + "' WHERE UserID = '" + str(self.user_ID) + "'")
 
     def set_card(self, card):
         self.card = card
-        cursor.execute("UPDATE user SET Card = '" + card + "' WHERE UserID = '" + str(self.user_ID) + "'")
+        cursor.execute("UPDATE user SET CardNumber = '" + str(card) + "' WHERE UserID = '" + str(self.user_ID) + "'")
 
     def update_address(self):
-        address = input("What is your new address line")
-        city = input("What is your new city")
-        state = input("What is your new state")
-        zip_code = input("what is your new state")
+        address = input("What is your new address line: ")
+        city = input("What is your new city: ")
+        state = input("What is your new state: ")
+        zip_code = int(input("what is your new zip code: "))
 
         self.set_address_line(address)
         self.set_city(city)
