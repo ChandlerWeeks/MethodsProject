@@ -29,6 +29,7 @@ class Order:
         self.userID = userID
         self.itemID = None
         self.quantity = None
+        self.price = None
         # didnt use these for date and time?
         self.date = None
         self.time = None
@@ -84,6 +85,13 @@ class Order:
         itemsOrdered = "SELECT ItemName FROM orderitems WHERE userID = '{}'".format(self.userID)
         cursor.execute(itemsOrdered)
         items = cursor.fetchall()
+        
+        #attempting to grab price Sums prices of items from orderitems table where userid matches best to not use user id bc user csan have mult ordres but not sure if i can just go off orderid here
+        cursor.execute("SELECT SUM(Price) FROM orderitems WHERE userID = '{}'".format(self.userID))
+        self.price = cursor.fetchone()
+        #grabs order id from order items where user id matches best to not use user id bc user can have mult orders but not sure what to go off
+        cursor.execute("SELECT OrderID From orderitems WHERE userID = '{}'".format(self.userID))
+        self.orderID = cursor.fetchone()
 
         cursor.execute("SELECT DateTime FROM orderitems WHERE userID = '{}'".format(self.userID))
         time = cursor.fetchall()
@@ -107,6 +115,7 @@ class Order:
                 for x in range(len(value[0])):
                     for i in value[0][x]:
                         print(i, value[1][x])
+        print(self.price,self.orderID)
 
 
 
