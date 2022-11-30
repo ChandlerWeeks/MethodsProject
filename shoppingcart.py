@@ -24,8 +24,8 @@ class ShoppingCart:
         self.cartID = []
         self.total_price = 0
         self.userID = userID
-        self.cursor = cursor
-        self.connection = connection
+        self.quantity = 0
+        self.price = 0
 
         cursor.execute(f"SELECT cartID FROM shoppingcart WHERE UserID = '{self.userID}'")
         self.cartID = cursor.fetchall()
@@ -130,10 +130,10 @@ class ShoppingCart:
         item_name = cursor.fetchall()
 
         cursor.execute(f"SELECT Price FROM cartitems WHERE CartID='{self.cartID[0][0]}'")
-        item_price = cursor.fetchall()
+        self.price = cursor.fetchall()
 
         cursor.execute(f"SELECT Quantity FROM cartitems WHERE CartID='{self.cartID[0][0]}'")
-        item_quantity = cursor.fetchall()
+        self.quantity = cursor.fetchall()
 
         cursor.execute(f"INSERT INTO orders (CartID, UserID, Price) VALUES "
                        f"('{self.cartID[0][0]}', '{self.userID}', '{self.total_price}')")
@@ -147,7 +147,7 @@ class ShoppingCart:
             cursor.execute(f"SELECT Stock FROM inventory WHERE ItemID='{item_stock_id[0][0]}'")
             item_stock = cursor.fetchall()
 
-            if 0 >= item_stock[0][0] or item_stock[0][0] < item_quantity[x][0]:
+            if 0 >= item_stock[0][0] or item_stock[0][0] < self.quantity[x][0]:
                 print('Sorry, unable to complete order.\n'
                       'Our stock may not be able to fulfill the order.')
             else:
@@ -155,7 +155,7 @@ class ShoppingCart:
                     cursor.execute(
                         f"INSERT INTO orderitems (OrderID, userID, ItemID, ItemName, Price, Quantity) VALUES "
                         f"('{order_id[0 - 1][0]}', '{self.userID}', '{item_id[x][0]}', '{item_name[x][0]}', "
-                        f"'{item_price[x][0]}', '{item_quantity[x][0]}')")
+                        f"'{self.price[x][0]}', '{self.quantity[x][0]}')")
                     connection.commit()
                     """for z in range(item_quantity[x][0]):
                         cursor.execute(f"UPDATE inventory SET Stock=Stock-1 WHERE ItemName = '{item_name[x][0]}'")
