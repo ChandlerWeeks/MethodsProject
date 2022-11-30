@@ -1,7 +1,5 @@
 import mysql.connector
 import sys
-from datetime import date
-from datetime import datetime
 
 try:
     connection = mysql.connector.connect(
@@ -60,39 +58,27 @@ class Order:
         cursor.execute("SELECT Quantity FROM orderitems WHERE ItemID = '{}'".format(self.itemID))
         return cursor.fetchall()
 
-    """def set_date(self, date):
-        date1 = date.today()
-        self.date = date1
-        d = date1.strftime("%B %d, %Y")
-        self.date = d
-    def get_date(self):
-        return self.date
-    def set_time(self, time):
-        time = datetime.now()
-        self.time = time
-        ct = time1.strftime("%H:%M:%S")
-        self.time= ct
-    def get_time(self):
-        return self.time"""
-
     # sets value to emty
     def deleteHistory(self):
         for key, value in self.ordereditems.items():
             if key == self.userID:
                 value = ""
-#add price and order id
+
+    # add price and order id
     def orderHistory(self):
         itemsOrdered = "SELECT ItemName FROM orderitems WHERE userID = '{}'".format(self.userID)
         cursor.execute(itemsOrdered)
         items = cursor.fetchall()
-        
-        #attempting to grab price Sums prices of items from orderitems table where userid matches best to not use user id bc user csan have mult ordres but not sure if i can just go off orderid here
-        cursor.execute("SELECT SUM(Price) FROM orderitems WHERE userID = '{}'".format(self.userID))
-        self.price = cursor.fetchone()[0]
-        #grabs order id from order items where user id matches best to not use user id bc user can have mult orders but not sure what to go off
+
+        # attempting to grab price Sums prices of items from orderitems table where userid matches best to not use user id bc user csan have mult ordres but not sure if i can just go off orderid here
+
+        # grabs order id from order items where user id matches best to not use user id bc user can have mult orders but not sure what to go off
         cursor.execute("SELECT OrderID From orderitems WHERE userID = '{}'".format(self.userID))
         self.orderID = cursor.fetchall()
-        self.orderID = self.orderID[1]
+
+        for x in range(len(self.orderID)):
+            cursor.execute("SELECT SUM(Price) FROM orderitems WHERE orderID = '{}'".format(self.orderID[x][0]))
+            self.price = cursor.fetchone()[0]
 
         cursor.execute("SELECT DateTime FROM orderitems WHERE userID = '{}'".format(self.userID))
         time = cursor.fetchall()
@@ -100,7 +86,7 @@ class Order:
         list2 = list(time)
         for x in range(len(list2)):
             for i in list2[x]:
-                list2[x] = i.strftime("%m/%d/%Y %H:%M:%S")
+                list2[x] = i.strftime("%m/%d/%Y")
         time = tuple(list2)
         # checking if user already made an order
         for key in self.ordereditems:
@@ -111,21 +97,15 @@ class Order:
             dict1 = {self.userID: [items, time]}
             self.ordereditems.update(dict1)
         # print values
-        for key, value in self.ordereditems.items():
-            if key == self.userID:
-                for x in range(len(value[0])):
-                    for i in value[0][x]:
-                        print(i, value[1][x])
-        print(self.price,self.orderID)
-
-
-
-# example method for datetime object printing
-# grabs datetime tuples at that element and converts them into a properly formatted string
-"""for x in range(len(value[1])):
-    for i in value[1][x]:
-        print(i.strftime("%m/%d/%Y %H:%M:%S"))"""
-
-userId = 1
-Order(userId).orderHistory()
-
+        print("Order History")
+        for x in range(len(self.orderID)):
+            if self.orderID[x - 1][0] != self.orderID[x][0] or len(self.orderID) == 1:
+                print(''.ljust(100, '-'))
+                print('Order ID:', self.orderID[x][0], 'Total price: ${0:.4g}'.format(self.price))
+                print(''.ljust(100, '-'))
+                for key, value in self.ordereditems.items():
+                    if key == self.userID:
+                        for i in range(len(value[0])):
+                            for z in value[0][i]:
+                                print('Item:', z, '|', 'Date:', value[1][i])
+        return print(''.ljust(100, '-'))
