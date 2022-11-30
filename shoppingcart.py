@@ -24,6 +24,8 @@ class ShoppingCart:
         self.cartID = []
         self.total_price = 0
         self.userID = userID
+        self.cursor = cursor
+        self.connection = connection
 
         cursor.execute(f"SELECT cartID FROM shoppingcart WHERE UserID = '{self.userID}'")
         self.cartID = cursor.fetchall()
@@ -72,6 +74,11 @@ class ShoppingCart:
         else:
             cursor.execute(f"UPDATE cartitems SET Quantity=Quantity-1 WHERE ItemID = '{item_removal[0][0]}'")
             connection.commit()
+
+    def clearCart(self):
+        cursor.execute(f"DELETE FROM cartitems WHERE CartID = '{self.cartID[0][0]}'")
+        connection.commit()
+        return print('Cart cleared.')
 
     def displayCart(self):
         cursor.execute(f"SELECT ItemName, Price, Quantity FROM cartitems WHERE cartID = '{self.cartID[0][0]}'")
