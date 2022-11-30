@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2022 at 11:45 PM
+-- Generation Time: Nov 30, 2022 at 09:52 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -32,19 +32,16 @@ CREATE TABLE `book` (
   `Title` char(20) DEFAULT NULL,
   `ISBN` char(20) DEFAULT NULL,
   `Author` char(20) DEFAULT NULL,
-  `Genre` char(20) DEFAULT NULL,
-  `Count` int(20) DEFAULT NULL,
-  `Style` char(20) DEFAULT NULL,
-  `Pages` int(20) DEFAULT NULL
+  `Genre` char(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `book`
 --
 
-INSERT INTO `book` (`BookID`, `Title`, `ISBN`, `Author`, `Genre`, `Count`, `Style`, `Pages`) VALUES
-(1, 'Wuthering Heights', '978-0593244036', 'Emily Bronte', 'Gothic Literature', 1, NULL, NULL),
-(2, '1984', '978-7205076900', 'George Orwell', 'Dystopian Fiction', 1, NULL, NULL);
+INSERT INTO `book` (`BookID`, `Title`, `ISBN`, `Author`, `Genre`) VALUES
+(1, 'Wuthering Heights', '978-0593244036', 'Emily Bronte', 'Gothic Literature'),
+(2, '1984', '978-7205076900', 'George Orwell', 'Dystopian Fiction');
 
 -- --------------------------------------------------------
 
@@ -66,8 +63,9 @@ CREATE TABLE `cartitems` (
 --
 
 INSERT INTO `cartitems` (`CartItemsID`, `CartID`, `ItemID`, `ItemName`, `Price`, `Quantity`) VALUES
-(36, 1, 2, 'Jaws', 12.99, 1),
-(37, 1, 1, 'Wuthering Heights', 10.99, 1);
+(37, 1, 1, 'Wuthering Heights', 10.99, 1),
+(38, 4, 9, '1984', 9.99, 1),
+(39, 1, 2, 'Jaws', 12.99, 1);
 
 -- --------------------------------------------------------
 
@@ -138,7 +136,8 @@ INSERT INTO `orderitems` (`OrderitemsID`, `OrderID`, `UserID`, `ItemID`, `ItemNa
 (61, 90, 1, 2, 'Jaws', 12.99, 1, '2022-11-27 05:18:00'),
 (62, 90, 1, 1, 'Wuthering Heights', 10.99, 1, '2022-11-27 05:18:00'),
 (63, 91, 1, 2, 'Jaws', 12.99, 1, '2022-11-27 05:19:08'),
-(64, 91, 1, 1, 'Wuthering Heights', 10.99, 1, '2022-11-27 05:19:08');
+(64, 91, 1, 1, 'Wuthering Heights', 10.99, 1, '2022-11-27 05:19:08'),
+(67, 98, 10, 9, '1984', 9.99, 1, '2022-11-30 14:36:57');
 
 -- --------------------------------------------------------
 
@@ -159,7 +158,8 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`OrderID`, `CartID`, `UserID`, `Price`) VALUES
 (90, 1, 1, 23.98),
-(91, 1, 1, 23.98);
+(91, 1, 1, 23.98),
+(98, 4, 10, 9.99);
 
 -- --------------------------------------------------------
 
@@ -178,7 +178,7 @@ CREATE TABLE `shoppingcart` (
 
 INSERT INTO `shoppingcart` (`CartID`, `UserID`) VALUES
 (1, 1),
-(2, 10);
+(4, 10);
 
 -- --------------------------------------------------------
 
@@ -277,13 +277,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `BookID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `BookID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `cartitems`
 --
 ALTER TABLE `cartitems`
-  MODIFY `CartItemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `CartItemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `inventory`
@@ -301,19 +301,19 @@ ALTER TABLE `movie`
 -- AUTO_INCREMENT for table `orderitems`
 --
 ALTER TABLE `orderitems`
-  MODIFY `OrderitemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `OrderitemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `OrderID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `OrderID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT for table `shoppingcart`
 --
 ALTER TABLE `shoppingcart`
-  MODIFY `CartID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `CartID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user`
