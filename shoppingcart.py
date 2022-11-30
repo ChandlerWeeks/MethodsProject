@@ -31,7 +31,6 @@ class ShoppingCart:
         if len(self.cartID) != 0:
             pass
         else:
-            print(self.cartID)
             cursor.execute(f"INSERT INTO shoppingcart (UserID) VALUES ('{self.userID}')")
             connection.commit()
 
@@ -111,6 +110,12 @@ class ShoppingCart:
 
     def checkout(self):
         order_id = None
+        cursor.execute(f"SELECT ItemName, Price, Quantity FROM cartitems WHERE cartID = '{self.cartID[0][0]}'")
+        self.cart = cursor.fetchall()
+
+        for x in range(len(self.cart)):
+            self.total_price += float(self.cart[x][1] * self.cart[x][2])
+
         cursor.execute(f"SELECT ItemID FROM cartitems WHERE CartID='{self.cartID[0][0]}'")
         item_id = cursor.fetchall()
 
@@ -140,18 +145,16 @@ class ShoppingCart:
                       'Our stock may not be able to fulfill the order.')
             else:
                 try:
-
                     cursor.execute(
                         f"INSERT INTO orderitems (OrderID, userID, ItemID, ItemName, Price, Quantity) VALUES "
                         f"('{order_id[0 - 1][0]}', '{self.userID}', '{item_id[x][0]}', '{item_name[x][0]}', "
                         f"'{item_price[x][0]}', '{item_quantity[x][0]}')")
                     connection.commit()
-                    for z in range(item_quantity[x][0]):
+                    """for z in range(item_quantity[x][0]):
                         cursor.execute(f"UPDATE inventory SET Stock=Stock-1 WHERE ItemName = '{item_name[x][0]}'")
                         connection.commit()
                     cursor.execute(f"DELETE FROM cartitems WHERE CartID = '{self.cartID[0][0]}'")
-                    connection.commit()
+                    connection.commit()"""
                 except Exception as e:
                     print('Something went wrong', e)
-        print('Checkout complete.')
-        
+        return print('Checkout complete.')
