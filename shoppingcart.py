@@ -65,7 +65,9 @@ class ShoppingCart:
     def removeItem(self, item):
         cursor.execute(f"SELECT ItemID, Quantity FROM cartitems WHERE ItemName='{item}'")
         item_removal = cursor.fetchall()
-        if f'{item_removal[0][1]}' == 1:
+        if not item_removal:
+            return print('Item not found in cart.\n')
+        if item_removal[0][1] <= 1:
             cursor.execute(f"DELETE FROM cartitems WHERE ItemID = '{item_removal[0][0]}'")
             connection.commit()
         else:
@@ -78,13 +80,17 @@ class ShoppingCart:
 
         for x in range(len(self.cart)):
             self.total_price += float(self.cart[x][1] * self.cart[x][2])
-            
+
         while True:
+            print('Cart')
+            print(''.ljust(100, '-'))
             if len(self.cart) != 0:
                 for x in range(len(self.cart)):
-                    print(f'{self.cart[x][0]}', 'Price:', f'${self.cart[x][1]}', 'Quantity:', f'{self.cart[x][2]}')
+                    print(f'{self.cart[x][0]},', 'Price:', f'${self.cart[x][1]}', 'Quantity:', f'{self.cart[x][2]}')
 
+                print(''.ljust(100, '-'))
                 print("Total Price:", f'${self.total_price}')
+                print(''.ljust(20, '-'))
                 print('1) Remove item\n'
                       '2) Go back ')
                 prompt = (input())
@@ -148,3 +154,4 @@ class ShoppingCart:
                 except Exception as e:
                     print('Something went wrong', e)
         print('Checkout complete.')
+        
