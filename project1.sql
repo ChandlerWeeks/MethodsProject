@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 30, 2022 at 09:52 PM
+-- Generation Time: Dec 01, 2022 at 03:19 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `book` (
   `BookID` int(20) NOT NULL,
-  `Title` char(20) DEFAULT NULL,
+  `Title` char(100) DEFAULT NULL,
   `ISBN` char(20) DEFAULT NULL,
   `Author` char(20) DEFAULT NULL,
   `Genre` char(20) DEFAULT NULL
@@ -41,7 +41,15 @@ CREATE TABLE `book` (
 
 INSERT INTO `book` (`BookID`, `Title`, `ISBN`, `Author`, `Genre`) VALUES
 (1, 'Wuthering Heights', '978-0593244036', 'Emily Bronte', 'Gothic Literature'),
-(2, '1984', '978-7205076900', 'George Orwell', 'Dystopian Fiction');
+(2, '1984', '978-0451524935', 'George Orwell', 'Dystopian Fiction'),
+(4, 'To Kill a Mockingbird', '978-0446310789', 'Harper Lee', 'Southern Gothic'),
+(5, ' One Hundred Years of Solitude', '978-0141184999', 'Gabriel Garcia Marqu', 'Magic realism'),
+(6, 'The Fellowship of the Ring', '978-0395489314', 'J.R.R. Tolkien', 'Fantasy'),
+(7, 'Beloved', '978-1784876432', 'Toni Morrison', 'Historical Fiction'),
+(8, 'Dracula', '979-8721052927', 'Bram Stoker', 'Gothic Horror'),
+(9, 'Watership Down', '978-0307950192', 'Richard Adams', 'Fantasy'),
+(10, 'The Road Less Traveled', '978-0743238250', 'M. Scott Peck', 'Psychology'),
+(11, 'The Hobbit', '978-0618260300', 'J.R.R. Tolkien', 'Fantasy');
 
 -- --------------------------------------------------------
 
@@ -58,15 +66,6 @@ CREATE TABLE `cartitems` (
   `Quantity` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `cartitems`
---
-
-INSERT INTO `cartitems` (`CartItemsID`, `CartID`, `ItemID`, `ItemName`, `Price`, `Quantity`) VALUES
-(37, 1, 1, 'Wuthering Heights', 10.99, 1),
-(38, 4, 9, '1984', 9.99, 1),
-(39, 1, 2, 'Jaws', 12.99, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -75,7 +74,7 @@ INSERT INTO `cartitems` (`CartItemsID`, `CartID`, `ItemID`, `ItemName`, `Price`,
 
 CREATE TABLE `inventory` (
   `ItemID` int(20) NOT NULL,
-  `ItemName` char(20) DEFAULT NULL,
+  `ItemName` char(100) DEFAULT NULL,
   `Price` float DEFAULT NULL,
   `Rating` float DEFAULT NULL,
   `Stock` int(20) DEFAULT NULL
@@ -86,9 +85,26 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`ItemID`, `ItemName`, `Price`, `Rating`, `Stock`) VALUES
-(1, 'Wuthering Heights', 10.99, 5, 48),
-(2, 'Jaws', 12.99, 4.5, 48),
-(9, '1984', 9.99, 4.9, 50);
+(1, 'Wuthering Heights', 10.99, 5, 50),
+(2, 'Jaws', 12.99, 4.5, 50),
+(9, '1984', 9.99, 4.9, 50),
+(10, 'The Godfather', 7.99, 4.9, 50),
+(11, 'The Godfather II', 7.99, 4.8, 50),
+(12, 'The Shawshank Redemption', 12.99, 4.8, 50),
+(13, 'The Matrix', 11.99, 4.7, 50),
+(14, 'Inception', 15.99, 4.7, 50),
+(15, 'The Lord of the Rings: The Fellowship of the Ring', 15.99, 4.95, 50),
+(16, 'Fight Club', 13.25, 4.4, 50),
+(17, 'The Dark Knight', 15.3, 4.7, 50),
+(18, '12 Angry Men', 8.95, 4.8, 50),
+(19, 'To Kill a Mocking Bird', 8.92, 4.7, 50),
+(20, 'One Hundred Years of Solitude', 7.99, 4.2, 50),
+(21, 'The Fellowship of the Ring', 7.95, 4.8, 50),
+(22, 'Beloved', 6.5, 4.3, 50),
+(23, 'Dracula', 9.45, 4.4, 50),
+(24, 'Watership Down', 6.43, 4.2, 50),
+(25, 'The Road Less Traveled', 5.99, 4.1, 50),
+(26, 'The Hobbit', 9.99, 4.9, 50);
 
 -- --------------------------------------------------------
 
@@ -98,10 +114,10 @@ INSERT INTO `inventory` (`ItemID`, `ItemName`, `Price`, `Rating`, `Stock`) VALUE
 
 CREATE TABLE `movie` (
   `MovieID` int(20) NOT NULL,
-  `Title` char(20) DEFAULT NULL,
+  `Title` char(100) DEFAULT NULL,
   `Publisher` char(20) DEFAULT NULL,
   `Genre` char(20) DEFAULT NULL,
-  `Description` char(20) DEFAULT NULL
+  `Description` varchar(1000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -109,7 +125,16 @@ CREATE TABLE `movie` (
 --
 
 INSERT INTO `movie` (`MovieID`, `Title`, `Publisher`, `Genre`, `Description`) VALUES
-(1, 'Jaws', 'Universal Pictures', 'Thriller', NULL);
+(1, 'Jaws', 'Universal Pictures', 'Thriller', 'When a killer shark unleashes chaos on a beach community off Cape Cod, it\'s up to a local sheriff, a marine biologist, and an old seafarer to hunt the beast down.'),
+(2, 'The Godfather', 'Paramount Pictures', 'Mafia', 'The aging patriarch of an organized crime dynasty in postwar New York City transfers control of his clandestine empire to his reluctant youngest son.'),
+(3, 'The Shawshank Redemption', 'Columbia Pictures', 'Crime Drama', 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.'),
+(4, 'The Godfather Part II', 'Paramount Pictures', 'Mafia', 'The early life and career of Vito Corleone in 1920s New York City is portrayed, while his son, Michael, expands and tightens his grip on the family crime syndicate.'),
+(5, 'Inception', 'Warner Bros. Picture', 'Scifi Thriller', 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O., but his tragic past may doom the project and his team to disaster.'),
+(6, 'The Dark Knight', 'Warner Bros. Picture', 'Superhero', 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.'),
+(7, 'The Lord of the Rings: The Fellowship of the Ring', 'New Line Cinema', 'Fantasy Epic', 'A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.'),
+(8, 'The Matrix', 'Warner Bros. Picture', 'Scifi', 'When a beautiful stranger leads computer hacker Neo to a forbidding underworld, he discovers the shocking truth--the life he knows is the elaborate deception of an evil cyber-intelligence.'),
+(9, 'Fight Club', '20th Century Fox', 'Psychological Thrill', 'An insomniac office worker and a devil-may-care soap maker form an underground fight club that evolves into much more.'),
+(10, '12 Angry Men', 'United Artists', 'Legal Drama', 'The jury in a New York City murder trial is frustrated by a single member whose skeptical caution forces them to more carefully consider the evidence before jumping to a hasty verdict.');
 
 -- --------------------------------------------------------
 
@@ -128,17 +153,6 @@ CREATE TABLE `orderitems` (
   `DateTime` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `orderitems`
---
-
-INSERT INTO `orderitems` (`OrderitemsID`, `OrderID`, `UserID`, `ItemID`, `ItemName`, `Price`, `Quantity`, `DateTime`) VALUES
-(61, 90, 1, 2, 'Jaws', 12.99, 1, '2022-11-27 05:18:00'),
-(62, 90, 1, 1, 'Wuthering Heights', 10.99, 1, '2022-11-27 05:18:00'),
-(63, 91, 1, 2, 'Jaws', 12.99, 1, '2022-11-27 05:19:08'),
-(64, 91, 1, 1, 'Wuthering Heights', 10.99, 1, '2022-11-27 05:19:08'),
-(67, 98, 10, 9, '1984', 9.99, 1, '2022-11-30 14:36:57');
-
 -- --------------------------------------------------------
 
 --
@@ -152,15 +166,6 @@ CREATE TABLE `orders` (
   `Price` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`OrderID`, `CartID`, `UserID`, `Price`) VALUES
-(90, 1, 1, 23.98),
-(91, 1, 1, 23.98),
-(98, 4, 10, 9.99);
-
 -- --------------------------------------------------------
 
 --
@@ -171,14 +176,6 @@ CREATE TABLE `shoppingcart` (
   `CartID` int(20) NOT NULL,
   `UserID` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `shoppingcart`
---
-
-INSERT INTO `shoppingcart` (`CartID`, `UserID`) VALUES
-(1, 1),
-(4, 10);
 
 -- --------------------------------------------------------
 
@@ -198,14 +195,6 @@ CREATE TABLE `user` (
   `CardNumber` int(20) DEFAULT NULL,
   `UserID` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`Email`, `Password`, `FirstName`, `LastName`, `AddressLine`, `City`, `State`, `ZipCode`, `CardNumber`, `UserID`) VALUES
-('test@test.com', 'test', 'Test', 'Dummy', '325 St', 'Starkville', 'MS', 39759, NULL, 1),
-('fake@fake.com', 'test', 'John', 'Testman', '12 St.', 'Starkville', 'MS', 39759, 2147483647, 10);
 
 --
 -- Indexes for dumped tables
@@ -277,37 +266,37 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `BookID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `BookID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `cartitems`
 --
 ALTER TABLE `cartitems`
-  MODIFY `CartItemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `CartItemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `ItemID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `ItemID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `movie`
 --
 ALTER TABLE `movie`
-  MODIFY `MovieID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `MovieID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `orderitems`
 --
 ALTER TABLE `orderitems`
-  MODIFY `OrderitemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `OrderitemsID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `OrderID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+  MODIFY `OrderID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `shoppingcart`
