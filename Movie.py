@@ -32,9 +32,10 @@ class Movie:
                 cursor.execute(f"SELECT Stock FROM inventory WHERE ItemName = '{self.movie_list[x][1]}'")
                 self.movie_stock = cursor.fetchall()
 
-                if self.movie_stock[0][0] == 0 or self.movie_stock[0][0] is None:
-                    print(f'Title: {self.movie_list[x][1]}', f'Price: ${self.movie_price[0][0]}',
+                if len(self.movie_stock) > 0:
+                    if self.movie_stock[0][0] is None or self.movie_stock[0][0] == 0 :
+                        print(f'Title: {self.movie_list[x][1]}', f'Price: ${self.movie_price[0][0]}',
                           f'Description: {self.movie_list[x][4]}', f'Out of Stock!')
-                else:
-                    print(f'Title: {self.movie_list[x][1]}', f'Price: ${self.movie_price[0][0]}',
+                    else:
+                        print(f'Title: {self.movie_list[x][1]}', f'Price: ${self.movie_price[0][0]}',
                           f'Description: {self.movie_list[x][4]}', f'Stock: {self.movie_stock[0][0]}')

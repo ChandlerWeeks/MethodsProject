@@ -30,11 +30,12 @@ class Book:
             cursor.execute(f"SELECT Stock FROM inventory WHERE ItemName = '{self.book_list[x][1]}'")
             self.book_stock = cursor.fetchall()
 
-            if self.book_stock[0][0] <= 0 or self.book_stock[0][0] is None:
-                print(f'Title: {self.book_list[x][1]}', f'ISBN: {self.book_list[x][2]}',
+            if len(self.movie_stock) > 0:
+                if self.book_stock[0][0] <= 0 or self.book_stock[0][0] is None:
+                    print(f'Title: {self.book_list[x][1]}', f'ISBN: {self.book_list[x][2]}',
                       f'Author: {self.book_list[x][3]}',
                       f'Price: ${self.book_price[0][0]}', f'Out of Stock!')
-            else:
-                print(f'Title: {self.book_list[x][1]}', f'ISBN: {self.book_list[x][2]}',
+                else:
+                    print(f'Title: {self.book_list[x][1]}', f'ISBN: {self.book_list[x][2]}',
                       f'Author: {self.book_list[x][3]}',
                       f'Price: ${self.book_price[0][0]}', f'Stock: {self.book_stock[0][0]}')
