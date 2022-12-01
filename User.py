@@ -56,6 +56,8 @@ def login():
     password = input("What is your password: ")
     cursor.execute("SELECT Password FROM user WHERE Email = '{}'".format(email))
     found_password = cursor.fetchone()
+    if found_password == None:
+        return None
     for x in range(len(found_password)):
         print(found_password[x])
         print(password)
@@ -97,6 +99,7 @@ class User:
     def delete_user(self):
         cursor.execute("DELETE FROM user WHERE UserID = '" + str(self.user_ID) + "'")
         cursor.execute("DELETE FROM shoppingcart WHERE UserID = '{}'".format(self.user_ID))
+        cursor.execute("DELETE FROM orders WHERE UserID = '{}'".format(self.user_ID))
         del self
         connection.commit()
 

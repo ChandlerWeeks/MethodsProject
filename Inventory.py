@@ -15,7 +15,6 @@ except:
 
 cursor = connection.cursor()
 
-
 # Getters all find matching items from table
 def get_item_ID(item_ID):
     cursor.execute("SELECT * FROM 'Inventory' WHERE itemID = '{}'".format(item_ID))

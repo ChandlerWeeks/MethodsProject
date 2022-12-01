@@ -25,8 +25,8 @@ cursor = connection.cursor()
 
 def logged_in_loop(userID):
     logged_in_user = get_user(userID)  # stores the logged in user in a variable
+    print("Logged in successfully\n")
     while(True):
-        print("Logged in successfully\n")
         command = input(
             "What would you like to do:\n"
             "delete - delete your account\n"
@@ -54,6 +54,22 @@ def logged_in_loop(userID):
             break
         elif command == 'history':
             Order(userID).orderHistory()
+        elif command == "checkout":
+            ShoppingCart(userID).checkout()
+        elif command == "cart":
+            ShoppingCart(userID).displayCart()
+        elif command == "view":
+            arg = input("Would you like to display books or movies: ")
+            if arg == "books":
+                Book().display_books()
+            elif arg == "movies":
+                Movie().display_movies()
+        elif command == "remove":
+            ShoppingCart(userID).removeItem()
+        elif command == "add":
+            ShoppingCart(userID).addItem()
+        else:
+            print("Invalid command")
 
 
 def start_loop():
